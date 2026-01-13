@@ -1,0 +1,423 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% load filters %}
+
+{% block title %}My Cart - Shopping Cart{% endblock %}
+
+{% block main-content %}
+<style>
+    :root {
+        --cart-green: #1fbf75;
+        --cart-green-dark: #15945b;
+        --cart-blue: #2563eb;
+        --cart-red: #e11d48;
+    }
+
+    .cart-page-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .cart-hero-modern {
+        background: radial-gradient(circle at top left, #2563eb, #22c55e);
+        color: #fff;
+        padding: 32px 20px;
+        border-radius: 18px;
+        text-align: center;
+        margin-bottom: 28px;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.25);
+    }
+
+    .cart-hero-modern h2 {
+        font-weight: 700;
+        letter-spacing: 0.03em;
+    }
+
+    .cart-hero-modern p {
+        opacity: 0.95;
+        font-size: 0.98rem;
+    }
+
+    .cart-shell {
+        border-radius: 18px;
+        background: #ffffff;
+        box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+        overflow: hidden;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    .cart-table-wrapper {
+        padding: 12px 18px 4px 18px;
+    }
+
+    .cart-table-modern {
+        margin-bottom: 0;
+        vertical-align: middle;
+    }
+
+    .cart-table-modern thead th {
+        font-size: 0.82rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #6b7280;
+        background: #f9fafb;
+        border-bottom: 1px solid #e5e7eb;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .cart-table-modern tbody tr {
+        transition: background 0.25s ease, transform 0.18s ease;
+    }
+
+    .cart-table-modern tbody tr:hover {
+        background: #f9fafb;
+        transform: translateY(-1px);
+    }
+
+    .cart-product-info {
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+    }
+
+    .cart-product-thumb {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        background: #f3f4f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .cart-product-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .cart-product-title {
+        font-weight: 600;
+        font-size: 0.98rem;
+        margin-bottom: 2px;
+        color: #111827;
+    }
+
+    .cart-product-sub {
+        font-size: 0.78rem;
+        color: #6b7280;
+    }
+
+    .cart-price,
+    .cart-subtotal {
+        font-weight: 600;
+        color: #111827;
+        font-size: 0.95rem;
+    }
+
+    .cart-subtotal {
+        color: #16a34a;
+    }
+
+    .cart-qty-input {
+        max-width: 78px;
+        border-radius: 999px;
+        border: 1px solid #e5e7eb;
+        font-size: 0.85rem;
+        padding-inline: 0.55rem;
+        padding-top: 0.3rem;
+        padding-bottom: 0.3rem;
+    }
+
+    .cart-qty-input:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.15);
+    }
+
+    .btn-cart-pill {
+        border-radius: 999px;
+        padding: 0.35rem 0.9rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        transition: all 0.2s ease;
+    }
+
+    .btn-cart-pill i {
+        font-size: 0.9rem;
+    }
+
+    .btn-update-modern {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        color: #fff;
+    }
+
+    .btn-update-modern:hover {
+        transform: translateY(-1px) scale(1.03);
+        box-shadow: 0 8px 18px rgba(37, 99, 235, 0.35);
+        color: #fff;
+    }
+
+    .btn-remove-modern {
+        background: linear-gradient(135deg, #f97373, #e11d48);
+        color: #fff;
+    }
+
+    .btn-remove-modern:hover {
+        transform: translateY(-1px) scale(1.03);
+        box-shadow: 0 8px 18px rgba(220, 38, 38, 0.28);
+        color: #fff;
+    }
+
+    .btn-buy-modern {
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        color: #fff;
+    }
+
+    .btn-buy-modern:hover {
+        transform: translateY(-1px) scale(1.03);
+        box-shadow: 0 8px 18px rgba(34, 197, 94, 0.35);
+        color: #fff;
+    }
+
+    .cart-actions-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+    }
+
+    .cart-summary-bar {
+        padding: 14px 18px 16px 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f9fafb;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .cart-summary-text {
+        font-size: 0.9rem;
+        color: #4b5563;
+    }
+
+    .cart-grand-total {
+        font-weight: 700;
+        font-size: 1.05rem;
+        color: #111827;
+    }
+
+    .cart-summary-cta {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-continue-shop {
+        border-radius: 999px;
+        border: 1px solid #e5e7eb;
+        background: #ffffff;
+        padding: 0.45rem 1.1rem;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #4b5563;
+    }
+
+    .btn-continue-shop:hover {
+        background: #f3f4f6;
+    }
+
+    .btn-checkout-all {
+        border-radius: 999px;
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        border: none;
+        padding: 0.48rem 1.3rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #fff;
+    }
+
+    .btn-checkout-all:hover {
+        transform: translateY(-1px) scale(1.02);
+        box-shadow: 0 8px 18px rgba(22, 163, 74, 0.35);
+        color: #fff;
+    }
+
+    .empty-cart-modern {
+        text-align: center;
+        padding: 64px 20px;
+        background: radial-gradient(circle at top left, #eff6ff, #f9fafb);
+        border-radius: 18px;
+        margin-top: 20px;
+        box-shadow: 0 12px 30px rgba(148, 163, 184, 0.2);
+    }
+
+    .empty-cart-modern h3 {
+        font-weight: 700;
+        color: #111827;
+    }
+
+    .empty-cart-modern p {
+        color: #6b7280;
+        font-size: 0.96rem;
+    }
+
+    .btn-empty-shop {
+        margin-top: 12px;
+        border-radius: 999px;
+        padding: 0.7rem 1.7rem;
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        border: none;
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .btn-empty-shop:hover {
+        transform: translateY(-1px) scale(1.03);
+        box-shadow: 0 10px 24px rgba(37, 99, 235, 0.35);
+        color: #fff;
+    }
+
+    @media (max-width: 768px) {
+        .cart-summary-bar {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        .cart-actions-stack {
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+    }
+</style>
+
+<div class="container my-5 cart-page-wrapper">
+
+    <!-- Modern hero -->
+    <div class="cart-hero-modern">
+        <h2 class="fw-bold mb-1">
+            <i class="bi bi-cart-check-fill me-2"></i> My Cart
+        </h2>
+        <p class="mb-0">
+            Review your favorite dairy products and complete your order in a few clicks.
+        </p>
+    </div>
+
+    {% if cart_items %}
+        <div class="cart-shell">
+
+            <div class="cart-table-wrapper">
+                <div class="table-responsive">
+                    <table class="table align-middle cart-table-modern">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product</th>
+                                <th scope="col" class="text-center">Price</th>
+                                <th scope="col" class="text-center">Quantity</th>
+                                <th scope="col" class="text-end">Subtotal</th>
+                                <th scope="col" class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for item in cart_items %}
+                            <tr>
+                                <!-- Product info with thumbnail -->
+                                <td>
+                                    <div class="cart-product-info">
+                                        <div class="cart-product-thumb">
+                                            {% if item.product.image %}
+                                                <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}">
+                                            {% endif %}
+                                        </div>
+                                        <div>
+                                            <div class="cart-product-title">
+                                                {{ item.product.title }}
+                                            </div>
+                                            <div class="cart-product-sub">
+                                                {{ item.product.description|truncatewords:6 }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <!-- Unit price -->
+                                <td class="text-center">
+                                    <span class="cart-price">
+                                        ৳{{ item.product.discounted_price|floatformat:2 }}
+                                    </span>
+                                </td>
+
+                                <!-- Quantity + update -->
+                                <td class="text-center">
+                                    <form method="POST" action="{% url 'update_cart' item.id %}" class="d-inline-flex align-items-center gap-1">
+                                        {% csrf_token %}
+                                        <input type="number"
+                                               name="quantity"
+                                               min="1"
+                                               value="{{ item.quantity }}"
+                                               class="form-control cart-qty-input">
+                                        <button type="submit" class="btn-cart-pill btn-update-modern">
+                                            <i class="bi bi-arrow-repeat"></i> Update
+                                        </button>
+                                    </form>
+                                </td>
+
+                                <!-- Subtotal -->
+                                <td class="text-end">
+                                    <span class="cart-subtotal">
+                                        ৳{{ item.product.discounted_price|multiply:item.quantity|floatformat:2 }}
+                                    </span>
+                                </td>
+
+                                <!-- Actions: Remove + Buy Now -->
+                                <td class="text-end">
+                                    <div class="cart-actions-stack">
+                                        <a href="{% url 'remove_from_cart' item.id %}"
+                                           class="btn-cart-pill btn-remove-modern">
+                                            <i class="bi bi-trash3"></i> Remove
+                                        </a>
+
+                                        <!-- Buy Now → open buy_now form page for this product -->
+                                        <a href="{% url 'buy_now' item.product.id %}"
+                                           class="btn-cart-pill btn-buy-modern">
+                                            <i class="bi bi-lightning-charge"></i> Buy Now
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+
+           <!-- Summary bar -->
+<div class="cart-summary-bar">
+    <div class="cart-summary-text">
+        <span class="text-muted">Total items:</span>
+        <strong>{{ cart_items|length }}</strong>
+        &nbsp;•&nbsp;
+        <span class="text-muted">Grand Total:</span>
+        <span class="cart-grand-total">৳{{ total|floatformat:2 }}</span>
+    </div>
+
+    <div class="cart-summary-cta">
+        <a href="{% url 'home' %}" class="btn btn-continue-shop">
+            <i class="bi bi-arrow-left-short"></i> Continue Shopping
+        </a>
+    </div>
+</div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

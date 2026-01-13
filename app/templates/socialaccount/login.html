@@ -1,0 +1,43 @@
+{% extends "app/base.html" %}
+{% load static %}
+
+{% block title %}Continue with Google{% endblock %}
+
+{% block main-content %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body p-5 text-center">
+
+          <img
+            src="https://developers.google.com/identity/images/g-logo.png"
+            width="60"
+            class="mb-3"
+          />
+
+          <h3 class="fw-bold mb-2">Continue with Google</h3>
+          <p class="text-muted mb-4">
+            You are about to sign in using your Google account.
+          </p>
+
+          <form method="post">
+            {% csrf_token %}
+            <button type="submit"
+              class="btn btn-success btn-lg w-100 rounded-pill">
+              Continue
+            </button>
+          </form>
+
+          <div class="mt-4">
+            <a href="{% url 'account_login' %}">
+              ← Back to Login
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

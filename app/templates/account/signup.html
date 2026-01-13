@@ -1,0 +1,153 @@
+{% extends "app/base.html" %}
+{% load static %}
+{% load socialaccount %}
+{% load i18n %}
+{% load account %}
+
+{% block title %}Create Account{% endblock %}
+
+{% block main-content %}
+<style>
+  .signup-card {
+    max-width: 480px;
+    margin: 0 auto;
+    border-radius: 22px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    background: #ffffff;
+    overflow: hidden;
+  }
+
+  .signup-hero {
+    background: linear-gradient(135deg, #28a745, #0d6efd);
+    color: #fff;
+    padding: 28px 20px;
+    text-align: center;
+  }
+
+  .signup-hero h2 {
+    margin-bottom: 6px;
+  }
+
+  .google-btn {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 50px;
+    padding: 12px 14px;
+    width: 100%;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.25s ease;
+  }
+
+  .google-btn:hover {
+    background: #f8f9fa;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #aaa;
+    font-size: 0.85rem;
+    margin: 18px 0;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .divider:not(:empty)::before {
+    margin-right: .75em;
+  }
+
+  .divider:not(:empty)::after {
+    margin-left: .75em;
+  }
+</style>
+
+<div class="container my-5">
+  <div class="signup-card">
+    
+    <!-- Header -->
+    <div class="signup-hero">
+      <h2 class="fw-bold">Join Us Today</h2>
+      <p class="small mb-0">Create your account to get started</p>
+    </div>
+
+    <!-- Body -->
+    <div class="card-body p-4">
+
+      <!-- GOOGLE SIGNUP -->
+      <a href="{% provider_login_url 'google' %}" class="google-btn mb-3">
+        <img src="https://developers.google.com/identity/images/g-logo.png" width="20" alt="Google">
+        Sign up with Google
+      </a>
+
+      <div class="divider">OR</div>
+
+      <!-- EMAIL / PASSWORD SIGNUP -->
+      <form method="POST" action="{% url 'account_signup' %}">
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        <div class="form-floating mb-3">
+          <input type="email" name="email" class="form-control {% if form.email.errors %}is-invalid{% endif %}" 
+                 placeholder="Email address" value="{{ form.email.value|default:'' }}" required>
+          <label>Email address</label>
+          {% if form.email.errors %}
+            <div class="invalid-feedback">
+              {% for error in form.email.errors %}{{ error }}{% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="form-floating mb-3">
+          <input type="password" name="password1" class="form-control {% if form.password1.errors %}is-invalid{% endif %}" 
+                 placeholder="Password" required>
+          <label>Password</label>
+          {% if form.password1.errors %}
+            <div class="invalid-feedback">
+              {% for error in form.password1.errors %}{{ error }}{% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="form-floating mb-3">
+          <input type="password" name="password2" class="form-control {% if form.password2.errors %}is-invalid{% endif %}" 
+                 placeholder="Confirm Password" required>
+          <label>Confirm Password</label>
+          {% if form.password2.errors %}
+            <div class="invalid-feedback">
+              {% for error in form.password2.errors %}{{ error }}{% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-success w-100 rounded-pill py-2">
+          Create Account
+        </button>
+      </form>
+
+      <!-- Footer links -->
+      <div class="text-center mt-4">
+        <p class="mb-1 small">
+          Already have an account?
+          <a href="{% url 'account_login' %}" class="fw-semibold text-decoration-none">
+            Sign in here
+          </a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

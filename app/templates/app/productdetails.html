@@ -1,0 +1,72 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}{{ product.title }}{% endblock title %}
+
+{% block main-content %}
+<div class="container my-5">
+    <div class="row">
+
+        <!-- Product Image -->
+        <div class="col-md-6 text-center">
+            <img src="{{ product.image.url }}" alt="{{ product.title }}"
+                 class="img-fluid rounded shadow-sm"
+                 style="max-height:400px; object-fit:contain;">
+        </div>
+
+        <!-- Product Details -->
+        <div class="col-md-6">
+            <h2 class="fw-bold">{{ product.title }}</h2>
+
+            <p class="text-success fw-semibold fs-4 mb-3">
+                ৳{{ product.discounted_price }}
+            </p>
+
+            <p class="text-muted mb-3">{{ product.description }}</p>
+
+            {% if product.composition %}
+                <p><strong>Composition:</strong> {{ product.composition }}</p>
+            {% endif %}
+
+            {% if product.prodapp %}
+                <p><strong>Applicable For:</strong> {{ product.prodapp }}</p>
+            {% endif %}
+
+            <p><strong>Category:</strong> {{ product.get_category_display }}</p>
+
+            <!-- Action Buttons -->
+            <div class="product-actions mt-4 d-flex gap-3">
+                 <!-- Buy Now → Order Form -->
+                <a href="{% url 'buy_now' product.id %}" class="btn btn-success btn-lg">
+                    💳 Buy Now
+                </a>
+
+                <!-- Add to Cart -->
+                <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success btn-lg">
+                        🛒 Add to Cart
+                    </button>
+                </form>
+
+               
+
+                <!-- Add to Wishlist -->
+                <a href="{% url 'add_to_wishlist' product.id %}" class="btn btn-success btn-lg">
+                    ❤️ Add to Wishlist
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .btn-primary:hover,
+    .btn-success:hover,
+    .btn-outline-warning:hover {
+        transform: scale(1.05);
+        transition: 0.3s ease-in-out;
+    }
+</style>
+{% endblock main-content %}

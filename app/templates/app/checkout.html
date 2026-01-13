@@ -1,0 +1,24 @@
+{% extends 'app/base.html' %}
+{% block main-content %}
+<div class="container my-5">
+    <h2 class="mb-4">Checkout</h2>
+    {% if cart_items %}
+    <ul class="list-group mb-3">
+        {% for item in cart_items %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ item.product.title }} (x{{ item.quantity }})
+            <span>${{ item.total_price }}</span>
+        </li>
+        {% endfor %}
+    </ul>
+    <h4>Total: ${{ total }}</h4>
+    <form method="POST">
+        {% csrf_token %}
+        <button class="btn btn-success btn-lg">Place Order</button>
+    </form>
+    {% else %}
+    <h4>No items to checkout!</h4>
+    <a href="{% url 'home' %}" class="btn btn-primary">Shop Now</a>
+    {% endif %}
+</div>
+{% endblock %}

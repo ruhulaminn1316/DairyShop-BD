@@ -1,0 +1,97 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}My Wishlist - Saved Products{% endblock %}
+
+{% block main-content %}
+<style>
+    .wishlist-hero {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        color: white;
+        padding: 40px 0;
+        border-radius: 15px;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .wishlist-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        transition: 0.3s ease;
+        overflow: hidden;
+        background: #fff;
+        height: 100%;
+    }
+    .wishlist-image {
+        height: 200px;
+        width: 100%;
+        object-fit: contain;
+        background: #f8f9fa;
+        padding: 20px;
+    }
+    .btn-wishlist { border-radius: 25px; width: 100%; margin: 2px 0; }
+    .btn-add-cart { background: #007bff; color: white; }
+    .btn-buy-now { background: #28a745; color: white; }
+    .btn-remove-wish { background: #dc3545; color: white; }
+</style>
+
+<div class="container my-5">
+    <div class="wishlist-hero">
+        <h2 class="fw-bold mb-3"><i class="bi bi-heart-fill me-2"></i>My Wishlist</h2>
+        <p>Your saved dairy favorites.</p>
+    </div>
+
+    {% if wishlist_items %}
+        <div class="row g-4">
+
+            {% for item in wishlist_items %}
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="wishlist-card">
+
+                    <!-- FIXED IMAGE PATH -->
+                    {% if item.product.image %}
+                        <img src="{{ item.product.image.url }}" class="wishlist-image" alt="{{ item.product.title }}">
+                    {% else %}
+                        <img src="{% static 'app/images/no-image.png' %}" class="wishlist-image" alt="No Image">
+                    {% endif %}
+
+                    <div class="card-body text-center p-3">
+                        <h5 class="fw-bold mb-2">{{ item.product.title }}</h5>
+                        <p class="text-success fw-semibold mb-3">৳{{ item.product.discounted_price }}</p>
+
+                        <!-- Add to Cart -->
+                        <form method="POST" action="{% url 'add_to_cart' item.product.id %}">
+                            {% csrf_token %}
+                            <button class="btn btn-add-cart btn-wishlist">
+                                <i class="bi bi-cart-plus"></i> Add to Cart
+                            </button>
+                        </form>
+
+                        <!-- Buy Now → Takes user to Buy Page -->
+                        <a href="{% url 'buy_now' item.product.id %}" class="btn btn-buy-now btn-wishlist">
+                            <i class="bi bi-lightning-charge"></i> Buy Now
+                        </a>
+
+                        <!-- Remove from Wishlist -->
+                        <form method="POST" action="{% url 'remove_from_wishlist' item.id %}">
+                            {% csrf_token %}
+                            <button class="btn btn-remove-wish btn-wishlist" onclick="return confirm('Remove?')">
+                                <i class="bi bi-heartbreak"></i> Remove
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    {% else %}
+        <div class="text-center py-5">
+            <h4>Your wishlist is empty.</h4>
+            <a href="{% url 'home' %}" class="btn btn-primary mt-3">Shop Now</a>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

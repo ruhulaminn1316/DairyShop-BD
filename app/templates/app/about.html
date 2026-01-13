@@ -1,0 +1,200 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}About Us{% endblock title %}
+
+{% block main-content %}
+
+<!-- AOS Animation Library -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+<div class="container my-5 py-4">
+
+    <!-- HERO SECTION -->
+    <div class="about-hero text-center mb-5" data-aos="fade-up">
+        <h1 class="display-5 fw-bold text-dark">About Us</h1>
+        <p class="lead text-muted col-lg-8 mx-auto">
+            Bringing fresh dairy from trusted Bangladeshi farms to your family — pure, natural & full of goodness.
+        </p>
+    </div>
+
+    <!-- IMAGE + STORY -->
+    <div class="row g-5 align-items-center mb-5">
+        <div class="col-lg-6" data-aos="fade-right">
+            <img src="{% static 'app/images/about.png' %}"
+                 class="img-fluid rounded-4 shadow-lg about-image"
+                 alt="Fresh dairy farm Bangladesh">
+        </div>
+
+        <div class="col-lg-6" data-aos="fade-left">
+            <h3 class="fw-bold mb-4" style="color: #2E8B57;">Our Story</h3>
+            <p class="lead text-muted mb-4">
+                We began our journey with a passion for delivering the freshest and healthiest dairy products across Bangladesh.
+                Every bottle of milk, curd, paneer & ghee we produce comes from ethically raised cows and carefully maintained farms.
+            </p>
+
+            <div class="features-list">
+                <div class="feature-item" data-aos="fade-up">
+                    <i class="fas fa-check-circle"></i> 100% Pure & Fresh Dairy
+                </div>
+                <div class="feature-item" data-aos="fade-up">
+                    <i class="fas fa-seedling"></i> Chemical-Free & Preservative-Free Products
+                </div>
+                <div class="feature-item" data-aos="fade-up">
+                    <i class="fas fa-truck"></i> Fast Delivery Every Morning
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OUR JOURNEY TIMELINE -->
+    <div class="timeline-section my-5">
+        <h2 class="fw-bold text-center mb-4" data-aos="fade-up">Our Journey</h2>
+
+        <div class="timeline">
+            <div class="timeline-box" data-aos="fade-right">
+                <h5>2021</h5>
+                <p>We started our dairy farm with a vision to deliver clean and fresh milk.</p>
+            </div>
+            <div class="timeline-box" data-aos="fade-left">
+                <h5>2022</h5>
+                <p>Launched paneer, curd, and ghee production with premium quality control.</p>
+            </div>
+            <div class="timeline-box" data-aos="fade-right">
+                <h5>2023</h5>
+                <p>Expanded supply chain across the city ensuring faster delivery.</p>
+            </div>
+            <div class="timeline-box" data-aos="fade-left">
+                <h5>2024</h5>
+                <p>Introduced online ordering system with home delivery service.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- VALUES ACCORDION -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-8">
+            <div class="accordion accordion-flush" id="valuesAccordion">
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#value1">
+                            Our Mission
+                        </button>
+                    </h2>
+                    <div id="value1" class="accordion-collapse collapse show" data-bs-parent="#valuesAccordion">
+                        <div class="accordion-body">
+                            Delivering fresh, safe and nutritious dairy products for every household in Bangladesh.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item mt-3">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#value2">
+                            Our Vision
+                        </button>
+                    </h2>
+                    <div id="value2" class="accordion-collapse collapse" data-bs-parent="#valuesAccordion">
+                        <div class="accordion-body">
+                            Becoming the most trusted dairy brand in Bangladesh, known for quality and honesty.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item mt-3">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#value3">
+                            Our Values
+                        </button>
+                    </h2>
+                    <div id="value3" class="accordion-collapse collapse" data-bs-parent="#valuesAccordion">
+                        <div class="accordion-body">
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-heart text-danger me-2"></i> Customer Happiness</li>
+                                <li><i class="fas fa-leaf text-success me-2"></i> Natural Products</li>
+                                <li><i class="fas fa-shield-alt text-warning me-2"></i> Trust & Transparency</li>
+                                <li><i class="fas fa-handshake text-primary me-2"></i> Ethical Farming</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA SECTION -->
+    <div class="text-center py-5 px-4 rounded-4 contact-cta" data-aos="fade-up">
+        <h3 class="fw-bold mb-3">Want to Know More?</h3>
+        <p class="text-muted mb-4 col-lg-9 mx-auto">
+            We love connecting with our customers. If you have questions or suggestions — feel free to reach out anytime!
+        </p>
+        <a href="{% url 'contact' %}" class="btn btn-success btn-lg px-5 py-3">
+            Contact Us
+        </a>
+    </div>
+
+</div>
+
+<!-- AOS JS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
+
+<!-- CUSTOM CSS -->
+<style>
+    .about-hero {
+        background: linear-gradient(135deg, #f8f9fa 0%, #eaf6ef 100%);
+        padding: 50px 20px;
+        border-radius: 20px;
+    }
+
+    .feature-item i {
+        color: #2E8B57;
+        font-size: 1.4rem;
+        margin-right: 10px;
+    }
+
+    .feature-item {
+        font-size: 1.05rem;
+        color: #495057;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+
+    .timeline {
+        position: relative;
+        margin-left: 20px;
+        border-left: 3px solid #2E8B57;
+        padding-left: 20px;
+    }
+
+    .timeline-box {
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+
+    .timeline-box h5 {
+        color: #2E8B57;
+        font-weight: bold;
+    }
+
+    .contact-cta {
+        background: linear-gradient(135deg, #f8f9fa 0%, #dff5e2 100%);
+    }
+
+    @media(max-width: 768px){
+        .about-image {
+            max-height: 280px;
+            object-fit: cover;
+        }
+    }
+</style>
+
+{% endblock %}

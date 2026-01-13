@@ -1,0 +1,150 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Category - {{ val|title }}{% endblock %}
+
+{% block main-content %}
+<div class="container my-5 py-4">
+
+    <!-- Category Header -->
+    <div class="text-center mb-5">
+        <h2 class="display-5 fw-bold mb-3" style="color:#212529;">
+            {{ val|title }}
+        </h2>
+        <p class="lead text-muted col-lg-8 mx-auto">
+            Explore our fresh & premium {{ val|lower }} products.
+        </p>
+        <span class="badge bg-light text-dark border px-4 py-2 fs-6">
+            {{ products|length }} Product{{ products|length|pluralize }}
+        </span>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="row g-4">
+        {% for product in products %}
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+
+            <div class="daraz-card">
+
+                <!-- BG IMAGE PART (Corrected) -->
+                <div class="daraz-card-img"
+                     {% if product.image %}
+                         style="background-image: url('{{ product.image.url }}');"
+                     {% else %}
+                         style="background-color:#f8f9fa;"
+                     {% endif %}
+                ></div>
+
+                <!-- TEXT PART -->
+                <div class="daraz-card-body">
+                    <h5 class="daraz-title">
+                        {{ product.title|truncatechars:45 }}
+                    </h5>
+
+                    <p class="daraz-price">
+                        ৳{{ product.discounted_price }}
+                        {% if product.original_price and product.original_price > product.discounted_price %}
+                        <span class="daraz-old-price">
+                            ৳{{ product.original_price }}
+                        </span>
+                        {% endif %}
+                    </p>
+
+                    <a href="{% url 'product_detail' product.pk %}"
+                       class="daraz-btn">
+                        View Details
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <i class="fas fa-box-open fa-3x text-muted mb-4"></i>
+            <p class="fs-4 text-muted">No products available in this category yet.</p>
+            <a href="{% url 'home' %}" class="btn btn-outline-success mt-3">
+                Explore All Products
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Daraz Style CSS -->
+<style>
+.daraz-card {
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    transition: all 0.3s ease;
+}
+
+.daraz-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+.daraz-card-img {
+    width: 100%;
+    height: 190px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #ffffff;
+}
+
+.daraz-card-body {
+    padding: 10px 12px 15px 12px;
+}
+
+.daraz-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #222;
+    min-height: 38px;
+}
+
+.daraz-price {
+    margin-top: 6px;
+    margin-bottom: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #ff5e00;
+}
+
+.daraz-old-price {
+    font-size: 13px;
+    color: #999;
+    text-decoration: line-through;
+    margin-left: 4px;
+}
+
+.daraz-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: #0B8A40;
+    color: #fff;
+    border-radius: 6px;
+    padding: 7px 0;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.25s ease;
+}
+
+.daraz-btn:hover {
+    background: #046b2a;
+    color: #fff;
+}
+
+@media(max-width:768px){
+    .daraz-card-img { height: 160px; }
+}
+</style>
+
+{% endblock %}

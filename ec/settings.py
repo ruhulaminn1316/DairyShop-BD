@@ -26,13 +26,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ---------------- SECURITY ----------------
 SECRET_KEY = 'django-insecure-4^hblj$3@q-n3mp%vmvy&367_c*@jqj$bo7@25wq_6mkd9gu&f'
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = [
-    'dailydairyshop-3.onrender.com',
-    '127.0.0.1',
-    'localhost'
-]
+
+ALLOWED_HOSTS = ['dairyshop-bd.onrender.com',
+                 '.onrender.com', '127.0.0.1', 
+                 'localhost']
+
 
 # ---------------- LOGIN ----------------
 LOGIN_URL = '/accounts/login/'

@@ -33,14 +33,7 @@ Perfect for small dairy businesses, startups, or learning full-stack Django deve
 
 ## Key Features
 
-### Customer Features
-- Full-screen animated welcome slider (text + snow effect)
-- Browse products by category
-- View detailed product page with images
-- Add to Cart & Buy Now
-- Responsive design (mobile-first)
-- Beautiful cards with hover effects
-- Small & elegant "View Details" buttons
+
 
 ### Admin Features
 - Custom Admin Dashboard (`/adminpanel/`)
